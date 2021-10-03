@@ -1,16 +1,36 @@
-# This is a sample Python script.
+from fastapi import FastAPI
+import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+app = FastAPI()
+
+origin = [
+    "http://localhost",
+    "http://localhost:3000/"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
+@app.get("/")
+async def GetRoot():
+    return {"message": "Hello world"}
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+@app.get("/get")
+async def GetRoot():
+    return {"message": "Hello get"}
 
 
-# Press the green button in the gutter to run the script.
+@app.get("/add")
+async def GetRoot():
+    return {"message": "Hello add"}
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    uvicorn.run("main:app", host="localhost", port=7070)
