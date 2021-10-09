@@ -1,6 +1,7 @@
 from fastapi import FastAPI
-import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
+from router import jobsRouter
+import uvicorn
 
 app = FastAPI()
 
@@ -17,20 +18,12 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+
 @app.get("/")
 async def GetRoot():
     return {"message": "Hello world"}
 
+app.include_router(jobsRouter.jobsRouter)
 
-@app.get("/get")
-async def GetRoot():
-    return {"message": "Hello get"}
-
-
-@app.get("/add")
-async def GetRoot():
-    return {"message": "Hello add"}
-
-#
-# if __name__ == '__main__':
-#     uvicorn.run("main:app", host="localhost", port=7070)
+if __name__ == '__main__':
+    uvicorn.run("main:app", host="localhost", port=7070, debug=True, reload=True)
